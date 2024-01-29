@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: myappdb
+      MYSQL_USER: myappuser
+      MYSQL_PASSWORD: myapppassword
+    networks:
+      - mynetwork
+
+  app:
+    image: cumbe11/ada-docker:v1
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    deploy:
+      replicas: 2  # Defina o número desejado de réplicas
+      restart_policy:
+        condition: on-failure
+
+networks:
+  mynetwork:
+    driver: overlay
+
+volumes:
+  db_data:
