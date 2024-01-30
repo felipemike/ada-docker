@@ -1,34 +1,30 @@
-version: '3.7'
+version: '3'
 
 services:
+  # Serviço do banco de dados MySQL
   db:
-    image: mysql
+    image: mysql:latest
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: myappdb
-      MYSQL_USER: myappuser
-      MYSQL_PASSWORD: myapppassword
-    networks:
-      - mynetwork
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepassword
 
+  # Serviço da aplicação web
   app:
-    image: cumbe11/ada-docker:v1
+    build: .
     ports:
-      - "80:80"
+      - "80:80"  # Corrigido para mapear a porta 80 do aplicativo para a porta 80 do host
     depends_on:
-      - db
+      - db  # Garante que o serviço do banco de dados seja iniciado primeiro
     networks:
       - mynetwork
-    deploy:
-      replicas: 2  # Defina o número desejado de réplicas
-      restart_policy:
-        condition: on-failure
 
 networks:
   mynetwork:
-    driver: overlay
+    driver: bridge
 
 volumes:
   db_data:
