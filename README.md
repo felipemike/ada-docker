@@ -29,7 +29,7 @@ Copy code
 
    ```bash
    git clone https://github.com/felipemike/ada-docker.git
-Navegue até o diretório do projeto:
+
 
 2. Execute o Docker Compose para construir e iniciar os serviços:
 
